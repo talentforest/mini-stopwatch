@@ -58,7 +58,7 @@ yarn start
 
 본 저장소의 `wiki`에서 요구사항을 확인하실 수 있습니다.
 
--   [링크](https://github.com/hanameee/mini-stopwatch/wiki/%08요구사항)
+-   [링크](https://github.com/hanameee/mini-stopwatch/wiki/요구사항)
 
 ## 🖥 데모 페이지
 
