@@ -34,7 +34,7 @@ const toggleBtnStyle = () => {
 const startTimer = () => {
     stopwatch.start();
     interval = setInterval(() => {
-        updateTime(stopwatch._centisecond);
+        updateTime(formatTime(stopwatch._centisecond));
     });
 
     $startStopbtnLabel.innerText = '중단';
@@ -50,3 +50,15 @@ const stopTimer = () => {
 };
 
 $startStopBtn.addEventListener('click', onClickStartStopBtn);
+
+// 2. 시간 포맷팅 구현
+const formatString = (num) => (num < 10 ? '0' + num : num);
+const formatTime = (centisecond) => {
+    const min = parseInt(centisecond / 6000);
+    const sec = parseInt((centisecond - 6000 * min) / 100);
+    const centisec = centisecond % 100;
+
+    return `${formatString(min)}:${formatString(sec)}:${formatString(
+        centisec
+    )}`;
+};
