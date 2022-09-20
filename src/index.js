@@ -4,8 +4,8 @@ import Stopwatch from './stopwatch.js';
 // 1. 시작, 중단 기능 구현
 const stopwatch = new Stopwatch();
 
-const $startStopBtn = document.getElementById('start-stop-btn');
 const $timer = document.getElementById('timer');
+const $startStopBtn = document.getElementById('start-stop-btn');
 const $startStopbtnLabel = document.getElementById('start-stop-btn-label');
 const $lapResetLabel = document.getElementById('lap-reset-btn-label');
 
@@ -35,7 +35,7 @@ const startTimer = () => {
     stopwatch.start();
     interval = setInterval(() => {
         updateTime(formatTime(stopwatch._centisecond));
-    });
+    }, 10);
 
     $startStopbtnLabel.innerText = '중단';
     $lapResetLabel.innerText = '랩';
@@ -58,7 +58,29 @@ const formatTime = (centisecond) => {
     const sec = parseInt((centisecond - 6000 * min) / 100);
     const centisec = centisecond % 100;
 
-    return `${formatString(min)}:${formatString(sec)}:${formatString(
+    return `${formatString(min)}:${formatString(sec)}.${formatString(
         centisec
     )}`;
 };
+
+// 3. 랩 기능 구현
+const $lapResetBtn = document.getElementById('lap-reset-btn');
+const $laps = document.getElementById('laps');
+
+const onClickLapResetBtn = () => {
+    createLapElement();
+};
+
+const createLapElement = () => {
+    const [lapCount, lapTime] = stopwatch.createLap();
+    const $lap = document.createElement('li');
+    $lap.classList.add('flex', 'justify-between', 'py-2', 'px-3', 'border-b-2');
+    $lap.innerHTML = `
+      <span>랩 ${lapCount}</span>
+      <span>${formatTime(lapTime)}</span>
+    `;
+
+    $laps.prepend($lap);
+};
+
+$lapResetBtn.addEventListener('click', onClickLapResetBtn);
