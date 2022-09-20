@@ -78,6 +78,7 @@ const onClickLapResetBtn = () => {
 const createLapElement = () => {
     const [lapCount, lapTime] = stopwatch.createLap();
     const $lap = document.createElement('li');
+
     $lap.setAttribute('data-time', lapTime);
     $lap.classList.add('flex', 'justify-between', 'py-2', 'px-3', 'border-b-2');
     $lap.innerHTML = `
@@ -86,6 +87,7 @@ const createLapElement = () => {
     `;
 
     $laps.prepend($lap);
+    compareMinMaxRecord($lap, lapTime);
 };
 
 $lapResetBtn.addEventListener('click', onClickLapResetBtn);
@@ -95,6 +97,8 @@ const resetTimer = () => {
     stopwatch.reset();
     updateTime(formatTime(0));
     $laps.innerHTML = '';
+    minLap = undefined;
+    maxLap = undefined;
 };
 
 // 5. 키보드 조작 기능 구현
@@ -108,3 +112,39 @@ document.addEventListener('keydown', (event) => {
             break;
     }
 });
+
+// 6. 최단, 최장 기록 강조 효과 구현
+let minLap;
+let maxLap;
+
+const colorMinMaxLap = () => {
+    minLap.classList.add('text-green-600');
+    maxLap.classList.add('text-red-600');
+};
+
+const compareMinMaxRecord = ($lap, lapTime) => {
+    if (minLap === undefined) {
+        minLap = $lap;
+        return;
+    }
+
+    if (maxLap === undefined) {
+        if (lapTime < minLap.dataset.time) {
+            maxLap = minLap;
+            minLap = $lap;
+        } else {
+            maxLap = $lap;
+        }
+        colorMinMaxLap();
+        return;
+    }
+
+    if (lapTime < minLap.dataset.time) {
+        minLap.classList.remove('text-green-600');
+        minLap = $lap;
+    } else if (lapTime > maxLap.dataset.time) {
+        maxLap.classList.remove('text-red-600');
+        maxLap = $lap;
+    }
+    colorMinMaxLap();
+};
