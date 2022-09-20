@@ -96,3 +96,15 @@ const resetTimer = () => {
     updateTime(formatTime(0));
     $laps.innerHTML = '';
 };
+
+// 5. 키보드 조작 기능 구현
+document.addEventListener('keydown', (event) => {
+    switch (event.code) {
+        case 'KeyL':
+            onClickLapResetBtn();
+            break;
+        case 'KeyS':
+            onClickStartStopBtn();
+            break;
+    }
+});
