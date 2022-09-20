@@ -68,12 +68,17 @@ const $lapResetBtn = document.getElementById('lap-reset-btn');
 const $laps = document.getElementById('laps');
 
 const onClickLapResetBtn = () => {
-    createLapElement();
+    if (isRunning) {
+        createLapElement();
+    } else {
+        resetTimer();
+    }
 };
 
 const createLapElement = () => {
     const [lapCount, lapTime] = stopwatch.createLap();
     const $lap = document.createElement('li');
+    $lap.setAttribute('data-time', lapTime);
     $lap.classList.add('flex', 'justify-between', 'py-2', 'px-3', 'border-b-2');
     $lap.innerHTML = `
       <span>랩 ${lapCount}</span>
@@ -84,3 +89,10 @@ const createLapElement = () => {
 };
 
 $lapResetBtn.addEventListener('click', onClickLapResetBtn);
+
+// 4. 리셋 기능 구현
+const resetTimer = () => {
+    stopwatch.reset();
+    updateTime(formatTime(0));
+    $laps.innerHTML = '';
+};
